@@ -1,0 +1,87 @@
+{% extends "epay/base.html"%}
+{% block content %}
+    <h1>search<h1>
+
+      <div class="s004">
+        <form>
+          <fieldset>
+
+        <legend>WHAT ARE YOU LOOKING FOR?</legend>
+
+        <div class="inner-form">
+          <div class="input-field">
+
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search", id = "itemSearch">
+
+<p align="center">
+          <button class="btn btn-outline-success my-2 my-sm-0"  id ="search">Search</button>
+</p>
+        </div>
+        </div>
+
+            <div id = "List">
+
+
+              </div>
+
+
+                      <div class="suggestion-wrap">
+                        <a  href="{% url 'searchview' %}"><span> Search </span> </a>
+                        {% if user.is_authenticated %}
+                        <a  href="{% url 'item-create' %}"> <span> New Item </item> </span> </a>
+                        <a  href="{% url 'profile' %}"> <span> Profile </item> </span> </a>
+                        <a  href="{% url 'logout' %}"><span> Logout </item> </span></a>
+                        {% else %}
+                          <a  href="{% url 'login' %}"><span> Login </item> </span></a>
+                          <a chref="{% url 'register' %}"><span> Register </item> </span></a>
+                        {% endif %}
+                      </div>
+
+                      </fieldset>
+                    </form>
+                  </div>
+
+
+              </div>
+
+<div class='card-columns' >
+              <script>
+                  $("#search").click(function(e){
+                    var str = ""
+                    e.preventDefault()
+                    $.ajax({
+                      url:"{% url 'searchview1'%}",
+                      method:"GET",
+                      success: function(data){
+                      console.log(data)
+                        $("#List").empty()
+                          for(i=0;i<data.Items.length;i++){
+                            if(data.Items[i].itemTitle.toLowerCase().includes($("#itemSearch").val().toLowerCase())){
+                              var itemid = '{% url 'item-detail' 0 %}'.replace('0',data.Items[i].id)
+                              str+=
+                              "<div class='card'>"+
+
+                              "<img class='card-img-top' src=" + data.Items[i].itemPicture.url + "alt='Card image cap'>"+
+
+                                "<div class='card-body'>"+
+
+                                    "<h2><a class='article-title' href='"+itemid+"' >"+data.Items[i].itemTitle+"</h2>"+
+                                    "<small class='text-muted'>"+"By seller: " + data.Items[i].seller_id + " on " + data.Items[i].date_listed + "</small>"+
+
+                                  "</div>"+
+
+                                  "<small class='text-muted'>"+"listing end date: " + data.Items[i].endTime + "</small>"+
+
+                                "</div>"
+
+                            }
+                          }
+                          $("#List").html(str)
+                      },
+                    })
+
+                  })
+                </script>
+</div>
+
+{% endblock content %}

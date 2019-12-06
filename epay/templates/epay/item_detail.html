@@ -1,0 +1,34 @@
+{% extends "epay/base.html"%}
+{% block content %}
+    <h1>home</h1>
+    <article class="media content-section">
+      <div class="media-body">
+        <div class="article-metadata">
+          <h2 class="article-title">{{object.itemTitle}}</h2>
+          <small class="text-muted">By seller: {{object.seller}} on {{object.date_listed|date:"F d, Y"}}</small>
+          </div>
+          <small class="text-muted">listing end date: {{object.endTime|date:"F d, Y"}}</small> </br>
+            <img src="{{object.itemPicture.url}}">
+            </br>
+          <small class="text-muted">price: £{{object.price}}</small>
+          <h2><a class="article-title">{{object.itemDescription}}</h2>
+            {% if object.seller == user %}
+            <div>
+              <div class="alert alert-info" role="alert">
+                <a class=btn btn secondary btn-sm mt-1 mb-1 href="{% url 'item-update' object.id %}">Update Item?</a>
+              </div>
+            <div class="alert alert-danger" role="alert">
+              <a class=btn btn danger btn-sm mt-1 mb-1 href="{% url 'item-delete' object.id %}">Delete Item?</a>
+            </div>
+
+
+
+    
+
+        </div>
+            {% endif %}
+        </div>
+    </article>
+
+{% endblock content %}
+<img class="rounded-circle account-img" src="{{ user.profile.pic.url }}">
